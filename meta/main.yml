@@ -5,10 +5,8 @@ galaxy_info:
   description: install vouch-proxy
   author: l_with
   license: MIT
-  license_file: LICENSE
-  min_ansible_version: 2.9
+  min_ansible_version: '2.9'
   platforms:
-  - name: Ubuntu
-    versions: focal
-
-...
+    - name: Ubuntu
+      versions:
+        - focal

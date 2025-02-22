@@ -1,6 +1,6 @@
 ---
 
-- name: restart vouch-proxy
+- name: Restart vouch-proxy
   ansible.builtin.service:
     name: vouch-proxy
     state: restarted
