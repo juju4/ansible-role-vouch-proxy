@@ -10,7 +10,7 @@ home directory for vouch-proxy
 
 ### `vouch_proxy_version`: `v0.27.1`
 
-the version of vouch proxy 
+the version of vouch proxy
 
 ### `vouch_proxy_config`
 

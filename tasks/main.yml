@@ -16,13 +16,13 @@
     dest:    "{{ vouch_proxy_home }}"
 
 - name: Ensure build vouch-proxy binary
-  ansible.builtin.command: 
+  ansible.builtin.command:
     cmd:     "{{ vouch_proxy_home }}/do.sh build"
     chdir:   "{{ vouch_proxy_home }}"
     creates: "{{ vouch_proxy_home }}/vouch-proxy"
 
 - name: Ensure install vouch-proxy binary
-  ansible.builtin.command: 
+  ansible.builtin.command:
     cmd:     "{{ vouch_proxy_home }}/do.sh install"
     chdir:   "{{ vouch_proxy_home }}"
     creates: /bin/vouch-proxy
