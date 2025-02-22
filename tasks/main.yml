@@ -7,6 +7,8 @@
 - name: Ensure golang is installed
   ansible.builtin.package:
     name: golang
+  when:
+    - vouch_proxy_distrib_golang_enable | bool
 
 - name: Ensure vouch-proxy repository
   ansible.builtin.git:
