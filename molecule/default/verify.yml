@@ -1,0 +1,8 @@
+---
+
+- name: Verify
+  hosts: vouch_group
+  tasks:
+    - name: TBD
+      ansible.builtin.assert:
+        that: true
