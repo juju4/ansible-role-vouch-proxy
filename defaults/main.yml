@@ -5,3 +5,82 @@ vouch_proxy_version: v0.41.0
 
 # Ubuntu 24.04 has golang 1.22 which does not match 0.41.0
 vouch_proxy_distrib_golang_enable: false
+
+# https://github.com/vouch/vouch-proxy/blob/master/config/config.yml_example
+vouch_proxy_config:
+  vouch:
+    logLevel: info
+    testing: true
+    listen: 0.0.0.0
+    port: 9090
+    writeTimeout: 15
+    readTimeout: 15
+    idleTimeout: 15
+    # document_root: vp_in_a_path
+    # domains - VOUCH_DOMAINS
+    domains:
+      - yourdomain.com
+      - yourotherdomain.com
+    # Set allowAllUsers: true to use Vouch Proxy to just accept anyone who can authenticate at the configured provider - VOUCH_ALLOWALLUSERS
+    # allowAllUsers: false
+    # vouch.cookie.domain must be set below when enabling allowAllUsers
+    # Setting publicAccess: true will accept all requests, even without a valid jwt/cookie.  - VOUCH_PUBLICACCESS
+    # publicAccess: false
+    # whiteList (optional) allows only the listed usernames - VOUCH_WHITELIST
+    whiteList:
+      - bob@yourdomain.com
+      - alice@yourdomain.com
+      - joe@yourdomain.com
+    tls:
+      # cert: /path/to/signed_cert_plus_intermediates # VOUCH_TLS_CERT
+      # key: /path/to/private_key                     # VOUCH_TLS_KEY
+      # profile - defines the TLS configuration profile (modern, intermediate, old, default)
+      profile: intermediate                           # VOUCH_TLS_PROFILE
+    jwt:
+      # signing_method: HS256
+      # secret - VOUCH_JWT_SECRET
+      # a random string used to cryptographically sign the jwt when signing_method is set to HS256, HS384 or HS512
+      # Vouch Proxy complains if the string is less than 44 characters (256 bits as 32 base64 bytes)
+      # if the secret is not set here then Vouch Proxy will..
+      # - look for the secret in `./config/secret`
+      # - if `./config/secret` doesn't exist then randomly generate a secret and store it there
+      # in order to run multiple instances of vouch on multiple servers (perhaps purely for validating the jwt),
+      # you'll want them all to have the same secret
+      # secret:
+      # Path to the public/private key files when using an RSA or ECDSA signing method.
+      # public_key_file:  # VOUCH_JWT_PUBLIC_KEY_FILE
+      # private_key_file: # VOUCH_JWT_PRIVATE_KEY_FILE
+      # issuer: Vouch # VOUCH_JWT_ISSUER
+      maxAge: 240
+      compress: true
+    cookie:
+      name: VouchCookie
+      # optionally force the domain of the cookie to set
+      # domain: yourdomain.com # VOUCH_COOKIE_DOMAIN
+      # Set `secure: false` when protecting a non-https site such as http://app.yourdmain.com - VOUCH_COOKIE_SECURE
+      secure: true
+      # httpOnly: true # VOUCH_COOKIE_HTTPONLY
+      maxAge: 240
+      sameSite: lax
+    session:
+      name: VouchSession
+      maxAge: 5
+      # key - a cryptographic string used to store the session variable - VOUCH_SESSION_KEY
+      # if the key is not set here then it is generated at startup and stored in memory
+      # Vouch Proxy complains if the string is less than 44 characters (256 bits as 32 base64 bytes)
+      # you only want to set this if you're running multiple user facing vouch.yourdomain.com instances
+      # where each instance may rely on a session cookie for state or the original requested URL
+      # key: your_random_key
+    headers:
+      jwt: X-Vouch-Token                # VOUCH_HEADERS_JWT
+      querystring: access_token         # VOUCH_HEADERS_QUERYSTRING
+      redirect: X-Vouch-Requested-URI   # VOUCH_HEADERS_REDIRECT
+      # GENERAL WARNING ABOUT claims AND tokens
+      claims:
+        - groups
+        - given_name
+    test_url: http://yourdomain.com
+    post_logout_redirect_uris:
+      - http://myapp.yourdomain.com/login
+      - https://oauth2.googleapis.com/revoke
+      - https://myorg.okta.com/oauth2/123serverid/v1/logout?post_logout_redirect_uri=http://myapp.yourdomain.com/login
