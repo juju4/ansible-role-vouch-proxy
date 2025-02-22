@@ -1,6 +1,6 @@
 # Ansible Role Vouch-Proxy
 
-Installs and configures [https://github.com/vouch/vouch-proxy](Vouch-Proxy) as service
+Installs and configures [Vouch-Proxy](https://github.com/vouch/vouch-proxy) as service
 
 ## Role Variables
 
