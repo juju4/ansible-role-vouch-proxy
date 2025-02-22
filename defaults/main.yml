@@ -84,3 +84,5 @@ vouch_proxy_config:
       - http://myapp.yourdomain.com/login
       - https://oauth2.googleapis.com/revoke
       - https://myorg.okta.com/oauth2/123serverid/v1/logout?post_logout_redirect_uri=http://myapp.yourdomain.com/login
+
+is_container: false

@@ -1,8 +1,14 @@
 ---
 
+- name: Ensure reload daemon
+  ansible.builtin.systemd:
+    daemon_reload: true
+  when:
+    - not is_container | bool
+
 - name: Restart vouch-proxy
   ansible.builtin.service:
     name: vouch-proxy
     state: restarted
-
-...
+  when:
+    - not is_container | bool

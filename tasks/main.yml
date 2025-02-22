@@ -1,8 +1,20 @@
 ---
 
+- name: Set fact is_container
+  ansible.builtin.set_fact:
+    is_container: true
+  when: >
+    (ansible_virtualization_type is defined and
+      (ansible_virtualization_type == "docker" or ansible_virtualization_type == "containerd")
+    )
+
 - name: Ensure git is installed
   ansible.builtin.package:
     name: git
+
+- name: Ensure systemd is installed
+  ansible.builtin.package:
+    name: systemd
 
 - name: Ensure golang is installed
   ansible.builtin.package:
@@ -34,6 +46,8 @@
     src: config.yml.j2
     dest: "{{ vouch_proxy_home }}/config/config.yml"
     mode: '0600'
+  notify:
+    - Restart vouch-proxy
 
 - name: Ensure user vouch-proxy
   ansible.builtin.user:
@@ -45,16 +59,14 @@
     src: vouch-proxy.service.j2
     dest: /etc/systemd/system/vouch-proxy.service
     mode: '0644'
-  notify: Restart vouch-proxy
-
-- name: Ensure reload daemon
-  ansible.builtin.systemd:
-    daemon_reload: true
+  notify:
+    - Ensure reload daemon
+    - Restart vouch-proxy
 
 - name: Ensure vouch-proxy service is running (and enabled)
   ansible.builtin.service:
     name: vouch-proxy
     state: started
     enabled: true
-
-...
+  when:
+    - not is_container | bool
